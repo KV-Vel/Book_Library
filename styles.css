@@ -2,8 +2,10 @@
     --main-color: #FBF8F6;
     --secondary-color: #E6DBCD;
     --btn-color: linear-gradient(104deg, #7D83A3 0%, #819E88 13%, #ACBE78 24%, #D6CA76 35%, #F7BC71 47%, #F2A86B 58%, #EF7563 77%, #EE6861 92%);
-    --header-font: #7a6c62;
+    --header-color: #7a6c62;
+    --placeholder-color: #7a6c6294;
     --library-background: #E2D6C9;
+    --create-book-btn-color: #F18966;
 }
 
 body {
@@ -14,6 +16,10 @@ body {
     font-style: normal;
     min-width: 380px;
     
+}
+
+header > * {
+    margin: 0 10px 0 10px;
 }
 
 header, 
@@ -37,7 +43,7 @@ header {
 }
 
 .head, .empty-message {
-    color: var(--header-font);
+    color: var(--header-color);
     font-size: 24px;
 }
 
@@ -47,9 +53,9 @@ input, button {
     background-color: var(--btn-color);
 }
 
-input {
+.search-input {
     background-color: var(--secondary-color);
-    color: var(--header-font);
+    color: var(--header-color);
     width: calc(95% - 90px);
     padding-left: 55px;
 }
@@ -59,6 +65,8 @@ input, button {
     font-size: 0.8rem;
 }
 
+
+
 button {
     color: #fff;
     border: 1px solid black;
@@ -67,7 +75,7 @@ button {
 }
 
 input::placeholder {
-    color: var(--header-font);
+    color: var(--placeholder-color);
 }
 
 .head > span {
@@ -98,6 +106,106 @@ main > .wrapper-library {
 .empty-message {
     padding: 30px;
     font-weight: bold;
-    border: 3px dashed var(--header-font);
+    border: 3px dashed var(--header-color);
     border-radius: 35px;
 }
+
+/*Popup starts*/
+
+.darken {
+    filter: brightness(50%);
+}
+
+.popup-wrapper {
+    position: absolute;
+    background-color: #fff;
+}
+
+dialog {
+    color: var(--header-color);
+    border-radius: 10px 35px 10px 35px;
+}
+
+dialog > div {
+    padding: 1em;
+}
+
+form > * {
+    padding-bottom: 10px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+form,
+h3 {
+    padding: 20px 15px;
+}
+
+form > input {
+    background-color: var(--secondary-color);
+}
+
+form > input,
+.rating,
+.book-status {
+    margin-bottom: 15px;
+}
+
+.rating {
+    align-self: center;
+}
+
+.book-status {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.book-status > label {
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+}
+
+
+.create-book-btn {
+    background-image: none;
+    background-color: var(--create-book-btn-color);
+}
+
+input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    font-size: 1rem;
+    padding: 1px;
+    border: 0.15rem solid var(--create-book-btn-color);
+    border-radius: 0;
+  }
+  
+  input[type="checkbox"]::before {
+    content: "";
+    width: 0.5rem;
+    height: 0.5rem;
+    clip-path: inset();
+    transform: scale(0);
+    background-color: var(--create-book-btn-color);
+  }
+  
+  input[type="checkbox"]:checked::before {
+    transform: scale(1);
+  }
+  
+  input {
+    color: var(--header-color);
+  }
+
+
+
+/*https://doka.guide/html/dialog/
+https://www.figma.com/file/FwQXkKVs1yOzIv4A00JPba/Unkai-bookstore-(Community)?type=design&node-id=1-3&mode=design&t=g8c9MBiou74r9Dvb-0
+*/

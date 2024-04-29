@@ -24,7 +24,6 @@ h4, h5, h6 {
   	margin: 0;
 	padding: 0;
 	border: 0;
-	font-size: 100%;
 }
 
 /* HTML5 display-role reset for older browsers */
@@ -57,4 +56,12 @@ button, input {
 	font: inherit;
 	background-color: transparent;
 	cursor: pointer;
+  }
+
+  input {
+	outline: none;
+  }
+
+  dialog {
+	padding: 0;
   }

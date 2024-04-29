@@ -21,17 +21,37 @@
                         <path d="M13.5603 9.37058C13.6615 9.37058 13.7626 9.33205 13.8397 9.2548C15.2356 7.85891 15.2356 5.58735 13.8397 4.19166C13.6856 4.03735 13.435 4.03735 13.2809 4.19166C13.1266 4.34597 13.1266 4.5961 13.2809 4.75041C14.3686 5.83828 14.3686 7.60818 13.2809 8.69605C13.1266 8.85035 13.1266 9.10049 13.2809 9.25499C13.358 9.33185 13.4593 9.37058 13.5603 9.37058Z" fill="white"/>
                         <path d="M8.36595 8.34001C8.41633 8.34001 8.4677 8.33033 8.51729 8.30978C8.71882 8.22621 8.81445 7.99504 8.73087 7.79351C8.4675 7.15849 8.44715 6.45097 8.67417 5.80133C8.74609 5.59526 8.63742 5.36982 8.43134 5.2979C8.22586 5.22578 7.99983 5.33465 7.92811 5.54072C7.63688 6.37411 7.66276 7.28178 8.00062 8.0964C8.06385 8.24833 8.21104 8.34001 8.36595 8.34001Z" fill="white"/>
                         </svg>
-                    <input placeholder="find book" type="text">
+                    <input placeholder="find book" type="text" class="search-input">
                 </div>
                 <button type="button" class="add-book-btn">+add book</button>
             </header>
             <main>
                 <div class="wrapper-library">
                     <div class="empty-message">Your library is empty</div>
+                    <dialog aria-label="new-book-card" class="popup-wrapper">
+                        <div>
+                            <h3 id="new-book-card">Book card</h3>
+                            <form method="dialog">
+                                <label for="title">Title</label>
+                                <input placeholder="Catch 22" type='text' required id="title" autocomplete="off" autofocus>
+                                <label for="author">Author</label>
+                                <input placeholder="Joseph Heller" type="text" required id="author" autocomplete="off">
+                                <label for="pages">Pages</label>
+                                <input placeholder="544" type='text' required id="pages" autocomplete="off">
+                                <div class="book-status">
+                                    <label>Read?</label>
+                                    <input type="checkbox" class="checkbox">
+                                </div>
+                                <button type="submit" class="create-book-btn">Create book</button>
+                            </form>
+                        </div>
+                    </dialog aria-label="book-card">
                 </div>
             </main>
         </div>
     </div>
-    <script src="script.js"></script>  
+    <script src="script.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.15.1/js/all.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.15.1/js/v4-shims.js"></script>  
 </body>
 </html>
