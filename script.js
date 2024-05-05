@@ -1,15 +1,35 @@
 //TODO: MAKE search work
-// TODO: для добавленной книги нужно сделать ползунок или еще один чебокс, чтобы отметить, что книга прочитана.
-// TODO: сделать анимацию перехода из заполнения формы в добавление ее в начало библиотеки?
-// style scroll bar https://stackoverflow.com/questions/16670931/hide-scroll-bar-but-while-still-being-able-to-scroll
-// Проверить переменные в css Все ли исползуются?
 // Сделать что если больше 5-6 книг в библиотеке то .wrapper-library-center должен иметь свойство justify-content: center
 // Что если название слишком длинное
-const library = []; // if library.length !== 0 => убрать Your library is empty
+/**
+ * 1) Запушить в гит текущие изменения
+ * 2) Почитать у mooniDev про gitignore
+ * 3) Почитать про package-lock.json
+ */
+const library = [];
 const dialogWindow = document.querySelector('dialog');
 const addBookBtn = document.querySelector('.add-book-btn');
 const libraryWrapper = document.querySelector('.wrapper-library-center');
 const form = document.querySelector('form');
+let emptyMessage;
+
+function isLibraryEmpty () {
+    if (library.length === 0) {
+        emptyMessage = document.createElement('div');
+        emptyMessage.classList.add('empty-message');
+        emptyMessage.textContent = 'Your Library is empty';
+
+        libraryWrapper.classList.contains('wrapper-library-center-filled') ?
+        libraryWrapper.classList.replace('wrapper-library-center-filled', 'wrapper-library-center-empty') :
+        libraryWrapper.classList.add('wrapper-library-center-empty');
+
+        libraryWrapper.append(emptyMessage);
+    } else {
+        libraryWrapper.classList.replace('wrapper-library-center-empty', 'wrapper-library-center-filled');
+        emptyMessage.remove();
+    }
+}
+isLibraryEmpty()
 
 function Book (title, author, pages, status) {
     this.title = title;
@@ -46,10 +66,26 @@ function displayNewBook () {
     bookPages.classList.add('additional-book-info');
     bookPages.textContent = lastAddedBookInLibrary.pages + ' .pag';
 
-    const bookStatus = document.createElement('h6');
+    const bookStatus = document.createElement('button');
     bookStatus.classList.add("additional-book-info-status");
-    lastAddedBookInLibrary.status === false ? bookStatus.textContent = 'Not read' : bookStatus.textContent = 'Read';
+    if (lastAddedBookInLibrary.status === false) {
+        bookStatus.textContent = 'Unread';
+        bookStatus.classList.add('unread');
+    } else {
+        bookStatus.textContent = 'Read';
+        bookStatus.classList.add('read');
+    }
     frontCoverBook.append(headerBook, bookPages, bookStatus);
+
+    bookStatus.addEventListener('click', () => {
+        if (bookStatus.classList.contains('unread'))  {
+            bookStatus.classList.replace('unread', 'read');
+            bookStatus.textContent = 'Read';
+        } else if (bookStatus.classList.contains('read')) {
+            bookStatus.classList.replace('read', 'unread');
+            bookStatus.textContent = 'Unread';
+        }
+    });
 
     const headerBookTitle = document.createElement('h4');
     headerBookTitle.textContent = lastAddedBookInLibrary.title;
@@ -72,6 +108,7 @@ function displayNewBook () {
        const dataNumber = divBook.getAttribute('data-number');
        library.splice(dataNumber, 1);
        divBook.remove();
+       isLibraryEmpty()
     });
 }
 
@@ -89,6 +126,7 @@ dialogWindow.addEventListener('click', (event) => {
 form.addEventListener('submit', (event) => {
     event.preventDefault();
     addBookToLibrary()
+    isLibraryEmpty()
     displayNewBook()
     dialogWindow.close();
 });

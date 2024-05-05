@@ -18,7 +18,6 @@ body {
     font-family: 'Poppins', sans-serif;
     font-size: 1rem;
     font-style: normal;
-    /* min-width: 280px; */   
 }
 
 header > * {
@@ -100,24 +99,29 @@ main > .wrapper-library-center {
     width: 90%;
     background-color: var(--library-background);
     border-radius: 35px;
-    height: 82vh;
+    height: 81vh;
+    padding: 25px 35px;
 }
 
-/* .wrapper-library-center {
+.wrapper-library-center-empty {
     display: flex;
-    justify-content: center;    // Should be centered and above should be grid. Change between them if library is empty
+    justify-content: center;    
     align-items: center;
-} */
+}
 
-.wrapper-library-center {
+.wrapper-library-center-filled {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 250px));
     grid-template-rows: repeat(auto-fit, 260px);
-    padding: 25px 35px;
     row-gap: 30px;
     overflow-y: auto;
     justify-items: center;
+    scrollbar-width: none;
     /* justify-content: center; */
+}   
+
+.wrapper-library-center::-webkit-scrollbar {
+    display: none;
 }
 
 .empty-message {
@@ -268,13 +272,20 @@ input[type="checkbox"] {
     padding: 8px 25px;
     background-color: #eebdad;
     border-radius: 18px;
-    width: 60px;
     text-align: center;
   }
 
   .additional-book-info-status {
-    background-color: var(--unread-status);
     color: #fae4e4;
+    width: 100px;
+  }
+
+  .unread {
+    background-color: var(--unread-status);
+  }
+
+  .read {
+    background-color: var(--read-status);
   }
 
   .delete-btn-wrapper {
