@@ -1,10 +1,10 @@
 //TODO: MAKE search work
 // TODO: для добавленной книги нужно сделать ползунок или еще один чебокс, чтобы отметить, что книга прочитана.
 // TODO: сделать анимацию перехода из заполнения формы в добавление ее в начало библиотеки?
-// Make random background color for book
 // style scroll bar https://stackoverflow.com/questions/16670931/hide-scroll-bar-but-while-still-being-able-to-scroll
-// Сделать закладку с иконкой мусорки, чтобы можно было удалять
 // Проверить переменные в css Все ли исползуются?
+// Сделать что если больше 5-6 книг в библиотеке то .wrapper-library-center должен иметь свойство justify-content: center
+// Что если название слишком длинное
 const library = []; // if library.length !== 0 => убрать Your library is empty
 const dialogWindow = document.querySelector('dialog');
 const addBookBtn = document.querySelector('.add-book-btn');
@@ -18,19 +18,11 @@ function Book (title, author, pages, status) {
     this.status = status;
 }
 
-Book.prototype = {
-    constructor: Book,
-
-    info: function() {
-        return `${this.title} by ${this.author}, ${this.pages} pages, ${this.status}`
-    }
-}
-
 function addBookToLibrary () {
-    let titleInput = document.querySelector('.titleInput').value;
-    let authorInput = document.querySelector('.authorInput').value;
-    let pagesInput = document.querySelector('.pagesInput').value;
-    let statusInput = document.querySelector('.statusInput').checked;
+    const titleInput = document.querySelector('.titleInput').value;
+    const authorInput = document.querySelector('.authorInput').value;
+    const pagesInput = document.querySelector('.pagesInput').value;
+    const statusInput = document.querySelector('.statusInput').checked;
     library.push(new Book(titleInput, authorInput, pagesInput, statusInput));
 
     form.reset();
@@ -41,6 +33,7 @@ function displayNewBook () {
 
     const divBook = document.createElement('div');
     divBook.classList.add('book');
+    divBook.setAttribute('data-number', String(library.length - 1));
     libraryWrapper.append(divBook);
     
     const frontCoverBook = document.createElement('div');
@@ -63,6 +56,23 @@ function displayNewBook () {
     const headerBookAuthor = document.createElement('h5');
     headerBookAuthor.textContent = lastAddedBookInLibrary.author;
     headerBook.append(headerBookTitle, headerBookAuthor);
+
+    const deleteBtnWrapper = document.createElement('div');
+    deleteBtnWrapper.classList.add('delete-btn-wrapper');
+    frontCoverBook.append(deleteBtnWrapper);
+    const deleteBtn = document.createElement('button');
+    deleteBtnWrapper.append(deleteBtn);
+    const deleteIcon = document.createElement('img');
+    deleteIcon.setAttribute('src', "./sources/icons8-delete-30.png");
+    deleteIcon.width = 15;
+    deleteIcon.height = 14;
+    deleteBtn.append(deleteIcon);
+
+    deleteBtn.addEventListener('click', () => {
+       const dataNumber = divBook.getAttribute('data-number');
+       library.splice(dataNumber, 1);
+       divBook.remove();
+    });
 }
 
 addBookBtn.addEventListener('click', () => {
@@ -74,11 +84,11 @@ dialogWindow.addEventListener('click', (event) => {
         event.preventDefault();
         dialogWindow.close();
     }
-})
+});
 
 form.addEventListener('submit', (event) => {
     event.preventDefault();
     addBookToLibrary()
     displayNewBook()
     dialogWindow.close();
-})
+});
