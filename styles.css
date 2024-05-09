@@ -41,7 +41,6 @@ header > div {
 
 header {
     padding-top: 45px;
-
 }
 
 .head, .empty-message {
@@ -117,7 +116,7 @@ main > .wrapper-library-center {
     overflow-y: auto;
     justify-items: center;
     scrollbar-width: none;
-    /* justify-content: center; */
+    
 }   
 
 .wrapper-library-center::-webkit-scrollbar {
@@ -141,11 +140,16 @@ main > .wrapper-library-center {
 dialog {
     color: var(--header-color);
     border-radius: 10px 35px 10px 35px;
+    scrollbar-width: 0;
+    animation-name: show-dialog;
+    animation-duration: 1.2s;
 }
 
 dialog > div {
     padding: 1em;
     background-color: var(--main-color);
+    animation-name: show-inputs-in-dialog;
+    animation-duration: 1.2s;
 }
 
 form > * {
@@ -233,7 +237,7 @@ input[type="checkbox"] {
     background-color: var(--additional-cover-color);
     border-radius: 18px 10px 18px 18px;
     box-shadow: 1px 2px 4px 0px rgba(0,0,0,0.25);
-    color: rgb(88, 85, 85);
+    color: #501111ed;
     border-right: 3px solid var(--darken-side-book);
   }
 
@@ -263,14 +267,13 @@ input[type="checkbox"] {
     align-items: center;
     width: 80%;
     height: 35%;
-    background-color: #eebdad;
-    box-shadow: 1px 1px 2px 0px rgba(0,0,0,0.25) inset;
+    background-color: var(--create-book-btn-color);;
     border-radius: 18px;
   }
 
   .front-cover .additional-book-info, .additional-book-info-status {
     padding: 8px 25px;
-    background-color: #eebdad;
+    background-color: var(--create-book-btn-color);
     border-radius: 18px;
     text-align: center;
   }
@@ -278,7 +281,19 @@ input[type="checkbox"] {
   .additional-book-info-status {
     color: #fae4e4;
     width: 100px;
+    transition: all 1.5s;
+    overflow: hidden;
+    white-space: nowrap;
   }
+
+ .shrink-btn {
+    width: 0px;
+    padding: 8px 15px;
+    transition: all 1.5s;
+    overflow: hidden;
+    white-space: nowrap;
+    height: 28.8px;
+ }
 
   .unread {
     background-color: var(--unread-status);
@@ -296,10 +311,6 @@ input[type="checkbox"] {
     bottom: -25px;
     left: 25px;
     clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 63%, 0 100%);
-  }
-
-  img {
-    display: block;
   }
 
 /* Book end */
@@ -322,10 +333,38 @@ input[type="checkbox"] {
     }
 
     header > div {
-       width: initial;
+        width: 50%;
+        display: inherit;
+        position: relative;
     }
 
     .search-input {
         width: calc(95% - 60px);
     }
+
+    .search-input-icon {
+        left: 60px;
+    }
 }
+
+/*Animations*/
+@keyframes show-dialog {
+    from {
+        height: 0px;
+        scrollbar-width: none;
+        
+    }
+    to {
+        scrollbar-width: none;
+        height: 470px;
+    }
+  }
+
+  @keyframes show-inputs-in-dialog {
+    from {
+        display: none;
+    }
+    to {
+        display: block;
+    }
+  }
