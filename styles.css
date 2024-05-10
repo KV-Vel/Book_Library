@@ -7,7 +7,8 @@
     --library-background: #E2D6C9;
     --create-book-btn-color: #F18966;
     --additional-cover-color: #f5cd94b4;
-    --darken-side-book:#f1896693;
+    --front-cover-background: #ECA742;
+    --darken-side-book:#e9a645fc;
     --unread-status: #d0554e;
     --read-status: #acbe78;
 }
@@ -66,6 +67,10 @@ input, button {
     font-weight: bold;
     font-size: 0.8rem;
     color: #fff;
+    min-width: 0;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box; /* 2 */
+    box-sizing: border-box;
 }
 
 .add-book-btn{
@@ -143,6 +148,8 @@ dialog {
     scrollbar-width: 0;
     animation-name: show-dialog;
     animation-duration: 1.2s;
+    /*Firefox width fix*/
+    max-width: 303px;
 }
 
 dialog > div {
@@ -235,16 +242,23 @@ input[type="checkbox"] {
     width: 200px;
     height: 260px;
     background-color: var(--additional-cover-color);
-    border-radius: 18px 10px 18px 18px;
+    border-radius: 18px 3px 3px 18px;
     box-shadow: 1px 2px 4px 0px rgba(0,0,0,0.25);
-    color: #501111ed;
-    border-right: 3px solid var(--darken-side-book);
+    color: #3c3c3c;
+    border-right: 1px solid var(--darken-side-book);
+    font-family: "Roboto Condensed", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-size: 1.1rem;
   }
 
   h4, 
   h5, 
-  h6 {
+  h6,
+  .additional-book-info-status,
+  .delete-btn-wrapper  {
     text-align: center;
+    transform: rotateY(356deg);
   }
 
   .front-cover {
@@ -254,10 +268,11 @@ input[type="checkbox"] {
     align-items: center;
     width: 92%;
     box-shadow: 18px 0px 5px 0px rgba(0,0,0,0.25);
-    border-radius: 5px 10px 10px 5px;
-    background-color: var(--create-book-btn-color);
+    border-radius: 5px 3px 3px 5px;
+    background-color: var(--front-cover-background);
     border-left: 4px solid rgba(0, 0, 0, 0.205);
     position: relative;
+    border-right: 1px solid #00000040;
   }
 
   .header-book {
@@ -267,13 +282,13 @@ input[type="checkbox"] {
     align-items: center;
     width: 80%;
     height: 35%;
-    background-color: var(--create-book-btn-color);;
+    background-color: var(--front-cover-background);
     border-radius: 18px;
   }
 
   .front-cover .additional-book-info, .additional-book-info-status {
-    padding: 8px 25px;
-    background-color: var(--create-book-btn-color);
+    padding: 5px 15px;
+    background-color: (--front-cover-background);
     border-radius: 18px;
     text-align: center;
   }
@@ -281,18 +296,18 @@ input[type="checkbox"] {
   .additional-book-info-status {
     color: #fae4e4;
     width: 100px;
-    transition: all 1.5s;
+    transition: all 1s;
     overflow: hidden;
     white-space: nowrap;
   }
 
  .shrink-btn {
     width: 0px;
-    padding: 8px 15px;
-    transition: all 1.5s;
+    padding: 5px 15px;
+    transition: all 1s;
     overflow: hidden;
     white-space: nowrap;
-    height: 28.8px;
+    height: 22.8px;
  }
 
   .unread {
@@ -350,19 +365,21 @@ input[type="checkbox"] {
 /*Animations*/
 @keyframes show-dialog {
     from {
-        height: 0px;
+        height: 0%;
         scrollbar-width: none;
         
     }
     to {
         scrollbar-width: none;
-        height: 470px;
+        height: 470px; 
     }
   }
 
   @keyframes show-inputs-in-dialog {
     from {
         display: none;
+        /*Firefox workaround for "display: none" animation triggering after render */
+        visibility: hidden; 
     }
     to {
         display: block;

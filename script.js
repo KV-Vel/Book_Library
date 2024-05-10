@@ -1,16 +1,12 @@
 //TODO: MAKE search work
-// Animate Read Unread button. When clicked to shrink it and then width 100% again. Иконка сначала не должна появляться а когда кнопка сжалась то должен сначала поменяться цвет
-// Поменить шрифт на обложке на более выделяющийся и может быть upperCASE сделать 
+// Push current changes
 // Когда пользователь делает фокус на инпуте в dialog нужно чтобы label подчеркнулся... как сделать legend при focus?
-// Поменять цвет обложки на черно-коричневый #925a47
 // Анимация разворачивание и сворачивания диалога, именно сворачивания
 // Добавить иконку сайта в html 
 // Сделать описание другие шрифтов в dialog что нужно сделать
-// Поменять в css переменную front cover
-// В диалог при hoover на button что то придумать, хотя бы border
+// В диалог при hoover на button что то придумать, хотя бы border сделать внутренний outline белым, а внешний orange
 // Сделать focus у inputa search book
 // После завершения посмотреть https://alexandrugatea.com/odin/odin-library/ как он тут сделал анимацию открытия окна диалогового
-// Попробовать поставить все таки острые углы у книги, поиграться с этим.
 // Проверить все это у FireFox b Edge
 const library = [];
 const dialogWindow = document.querySelector("dialog");
@@ -97,7 +93,7 @@ function displayNewBook() {
       setTimeout(()=> {
         bookStatus.classList.remove("shrink-btn");
         bookStatus.textContent = "Read";
-      }, 1000);
+      }, 400);
       if (bookStatus.classList.contains("shrink-btn")) {
         bookStatus.textContent = "";
       }
@@ -108,7 +104,7 @@ function displayNewBook() {
       setTimeout(()=> {
         bookStatus.classList.remove("shrink-btn");
         bookStatus.textContent = "Unread";
-      }, 1000)
+      }, 400)
       if (bookStatus.classList.contains("shrink-btn")) {
         bookStatus.textContent = "";
       }
