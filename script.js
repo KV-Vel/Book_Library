@@ -1,40 +1,29 @@
-//TODO: MAKE search work
-// Push current changes
-// Когда пользователь делает фокус на инпуте в dialog нужно чтобы label подчеркнулся... как сделать legend при focus?
-// Анимация разворачивание и сворачивания диалога, именно сворачивания
-// Добавить иконку сайта в html 
-// Сделать описание другие шрифтов в dialog что нужно сделать
-// В диалог при hoover на button что то придумать, хотя бы border сделать внутренний outline белым, а внешний orange
-// Сделать focus у inputa search book
-// После завершения посмотреть https://alexandrugatea.com/odin/odin-library/ как он тут сделал анимацию открытия окна диалогового
-// Проверить все это у FireFox b Edge
 const library = [];
+let emptyMessage;
+let allBooks;
 const dialogWindow = document.querySelector("dialog");
 const addBookBtn = document.querySelector(".add-book-btn");
 const libraryWrapper = document.querySelector(".wrapper-library-center");
 const libraryWrapperFilled = document.querySelector(".wrapper-library-center-filled");
 const form = document.querySelector("form");
-let emptyMessage;
+const formInputs = form.querySelectorAll('input');
+const searchInput = document.querySelector('#search');
+const searchBtn = document.querySelector('.search-input-icon');
 
+//Display empty library message
 function isLibraryEmpty() {
-  if (library.length === 0) {
+  if (!library.length) {
     emptyMessage = document.createElement("div");
     emptyMessage.classList.add("empty-message");
     emptyMessage.textContent = "Your Library is empty";
 
     libraryWrapper.classList.contains("wrapper-library-center-filled") ?
-      libraryWrapper.classList.replace(
-        "wrapper-library-center-filled",
-        "wrapper-library-center-empty"
-      ) :
+      libraryWrapper.classList.replace("wrapper-library-center-filled", "wrapper-library-center-empty") :
       libraryWrapper.classList.add("wrapper-library-center-empty");
 
     libraryWrapper.append(emptyMessage);
   } else {
-    libraryWrapper.classList.replace(
-      "wrapper-library-center-empty",
-      "wrapper-library-center-filled"
-    );
+    libraryWrapper.classList.replace("wrapper-library-center-empty", "wrapper-library-center-filled");
     emptyMessage.remove();
   }
 }
@@ -52,100 +41,76 @@ function addBookToLibrary() {
   const authorInput = document.querySelector(".authorInput").value;
   const pagesInput = document.querySelector(".pagesInput").value;
   const statusInput = document.querySelector(".statusInput").checked;
+  
   library.push(new Book(titleInput, authorInput, pagesInput, statusInput));
 
   form.reset();
 }
 
 function displayNewBook() {
-  let lastAddedBookInLibrary = library[library.length - 1];
-
+  let lastAddedBookInLibrary = library.at(-1);
+  // DIV - Book wrapper
   const divBook = document.createElement("div");
   divBook.classList.add("book");
   divBook.setAttribute("data-number", String(library.length - 1));
   libraryWrapper.append(divBook);
-
+  // FRONT COVER
   const frontCoverBook = document.createElement("div");
   frontCoverBook.classList.add("front-cover");
   divBook.append(frontCoverBook);
-
+  // HEADER 
   const headerBook = document.createElement("div");
   headerBook.classList.add("header-book");
+  // BOOK PAGES 
   const bookPages = document.createElement("h6");
   bookPages.classList.add("additional-book-info");
-  bookPages.textContent = lastAddedBookInLibrary.pages + " pag.";
-
+  bookPages.textContent = `${lastAddedBookInLibrary.pages} pag.`;
+  // BOOK STATUS
   const bookStatus = document.createElement("button");
   bookStatus.classList.add("additional-book-info-status");
-  if (lastAddedBookInLibrary.status === false) {
+  if (!lastAddedBookInLibrary.status) {
     bookStatus.textContent = "Unread";
     bookStatus.classList.add("unread");
   } else {
     bookStatus.textContent = "Read";
     bookStatus.classList.add("read");
   }
+
   frontCoverBook.append(headerBook, bookPages, bookStatus);
+  // Changing book status
+  bookStatus.addEventListener("click", changeBookStatus);
 
-  bookStatus.addEventListener("click", () => {
-    if (bookStatus.classList.contains("unread")) {
-      bookStatus.classList.replace("unread", "read");
-      bookStatus.classList.add("shrink-btn");
-      setTimeout(()=> {
-        bookStatus.classList.remove("shrink-btn");
-        bookStatus.textContent = "Read";
-      }, 400);
-      if (bookStatus.classList.contains("shrink-btn")) {
-        bookStatus.textContent = "";
-      }
-      
-    } else if (bookStatus.classList.contains("read")) {
-      bookStatus.classList.replace("read", "unread");
-      bookStatus.classList.add("shrink-btn");
-      setTimeout(()=> {
-        bookStatus.classList.remove("shrink-btn");
-        bookStatus.textContent = "Unread";
-      }, 400)
-      if (bookStatus.classList.contains("shrink-btn")) {
-        bookStatus.textContent = "";
-      }
-    }
-  });
-
+  //BOOK TITLE
   const headerBookTitle = document.createElement("h4");
   headerBookTitle.textContent = lastAddedBookInLibrary.title;
+  // BOOK AUTHOR
   const headerBookAuthor = document.createElement("h5");
   headerBookAuthor.textContent = lastAddedBookInLibrary.author;
   headerBook.append(headerBookTitle, headerBookAuthor);
-
+  // DELETE BUTTON WRAPPER
   const deleteBtnWrapper = document.createElement("div");
   deleteBtnWrapper.classList.add("delete-btn-wrapper");
   frontCoverBook.append(deleteBtnWrapper);
+ // DELETE BUTTON 
   const deleteBtn = document.createElement("button");
   deleteBtnWrapper.append(deleteBtn);
+  // DELETE ICON
   const deleteIcon = document.createElement("img");
   deleteIcon.setAttribute("src", "./sources/icons8-delete-30.png");
   deleteIcon.width = 15;
   deleteIcon.height = 14;
   deleteBtn.append(deleteIcon);
 
-  deleteBtn.addEventListener("click", () => {
-    const dataNumber = divBook.getAttribute("data-number");
-    library.splice(dataNumber, 1);
-    divBook.remove();
-    isLibraryEmpty();
-  });
-}
+  //Delete book button 
+  deleteBtn.addEventListener("click", deleteBook);
 
-addBookBtn.addEventListener("click", () => {
-  dialogWindow.showModal();
-});
+  //add book show dialog window
+  addBookBtn.addEventListener("click", showDialogWindow);
 
-dialogWindow.addEventListener("click", (event) => {
-  if (event.target.tagName === "DIALOG") {
-    event.preventDefault();
-    dialogWindow.close();
-  }
-});
+  //close onclick outside of dialog
+  dialogWindow.addEventListener("click", closeDialog);
+
+/**EVENT LISTENERS */
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -154,3 +119,106 @@ form.addEventListener("submit", (event) => {
   displayNewBook();
   dialogWindow.close();
 });
+
+formInputs.forEach((input) => {
+  input.addEventListener('focus', () => {
+    // Styling labels on input focus
+    input.previousElementSibling.style.cssText = 'background-size: 0 1px, 100% 1px';
+  });
+})
+
+formInputs.forEach((input) => {
+  input.addEventListener('blur', () => {
+    input.previousElementSibling.style.cssText = 'background-size: 100% 1px, 0 1px';
+  });
+})
+
+searchInput.addEventListener('search', findBook);
+searchBtn.addEventListener('click', findBook);
+
+function closeDialog(event) {
+  if (event.target.tagName === "DIALOG") {
+    event.preventDefault();
+    dialogWindow.classList.add('hide-dialog');
+
+    setTimeout(() => {
+      dialogWindow.classList.remove('hide-dialog');
+      dialogWindow.close();
+    }, 500)
+  }
+}
+
+function showDialogWindow() {
+  dialogWindow.showModal();
+  dialogWindow.classList.add('show-dialog');
+
+  setTimeout(() => {
+    dialogWindow.classList.remove('show-dialog');
+  }, 1300)
+}
+
+function deleteBook() {
+  const dataNumber = divBook.getAttribute("data-number");
+  // Reduce data-number if book was deleted
+  allBooks = document.querySelectorAll('.book');
+
+  allBooks.forEach((book) => {
+    if (dataNumber < book.dataset.number) {
+      book.dataset.number = book.dataset.number - 1;
+    } 
+  });
+
+  library.splice(dataNumber, 1);
+  divBook.remove();
+  isLibraryEmpty();
+}
+}
+
+function changeBookStatus() {
+  if (bookStatus.classList.contains("unread") || bookStatus.classList.contains("read")) {
+
+    bookStatus.classList.contains("unread") ?
+      bookStatus.classList.replace("unread", "read") :
+      bookStatus.classList.replace("read", "unread");
+
+    bookStatus.classList.add("shrink-btn");
+    setTimeout(() => {
+      bookStatus.classList.remove("shrink-btn");
+
+      bookStatus.classList.contains("unread") ?
+        bookStatus.textContent = "Unread" :
+        bookStatus.textContent = "Read";
+
+    }, 400);
+    if (bookStatus.classList.contains("shrink-btn")) {
+      bookStatus.textContent = "";
+    }
+  }
+}
+
+// Search for book using input
+function findBook() {
+  allBooks = document.querySelectorAll('.book');
+  const userInput = searchInput.value;
+  // Taking index of Books that match search
+  const resultOfUserSearch = library.map((book, index) => {if (book.title.includes(userInput) || book.author.includes(userInput)) {return index}})
+                                    .filter(bookIndex => bookIndex !== undefined);
+
+  if (resultOfUserSearch.length === 0) {
+    alert('No such book');
+  }
+  // Hidding books that don't meet search
+  for (let bookIndex of resultOfUserSearch) {
+    allBooks.forEach((book) => {
+      if (book.getAttribute('data-number') != bookIndex && !resultOfUserSearch.includes(Number(book.getAttribute('data-number')))) {
+        book.style.cssText += 'display: none;';
+      } else {
+        book.style.cssText += 'display: flex;';
+      }
+    })
+  }
+  // After deleting input, book that was hidding will appear back
+  if (!userInput || userInput === ' ') {
+    allBooks.forEach((book) => book.style.cssText += 'display: flex;');
+  }
+}
