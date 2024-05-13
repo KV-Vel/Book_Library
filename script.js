@@ -78,7 +78,27 @@ function displayNewBook() {
 
   frontCoverBook.append(headerBook, bookPages, bookStatus);
   // Changing book status
-  bookStatus.addEventListener("click", changeBookStatus);
+  bookStatus.addEventListener("click", () => {
+    if (bookStatus.classList.contains("unread") || bookStatus.classList.contains("read")) {
+
+      bookStatus.classList.contains("unread") ?
+        bookStatus.classList.replace("unread", "read") :
+        bookStatus.classList.replace("read", "unread");
+  
+      bookStatus.classList.add("shrink-btn");
+      setTimeout(() => {
+        bookStatus.classList.remove("shrink-btn");
+  
+        bookStatus.classList.contains("unread") ?
+          bookStatus.textContent = "Unread" :
+          bookStatus.textContent = "Read";
+  
+      }, 400);
+      if (bookStatus.classList.contains("shrink-btn")) {
+        bookStatus.textContent = "";
+      }
+    }
+  });
 
   //BOOK TITLE
   const headerBookTitle = document.createElement("h4");
@@ -102,8 +122,23 @@ function displayNewBook() {
   deleteBtn.append(deleteIcon);
 
   //Delete book button 
-  deleteBtn.addEventListener("click", deleteBook);
-
+  deleteBtn.addEventListener("click", () => {
+    const dataNumber = divBook.getAttribute("data-number");
+    // Reduce data-number if book was deleted
+    allBooks = document.querySelectorAll('.book');
+  
+    allBooks.forEach((book) => {
+      if (dataNumber < book.dataset.number) {
+        book.dataset.number = book.dataset.number - 1;
+      } 
+    });
+  
+    library.splice(dataNumber, 1);
+    divBook.remove();
+    isLibraryEmpty();
+  });
+  
+}
   //add book show dialog window
   addBookBtn.addEventListener("click", showDialogWindow);
 
@@ -111,7 +146,7 @@ function displayNewBook() {
   dialogWindow.addEventListener("click", closeDialog);
 
 /**EVENT LISTENERS */
-
+  
 form.addEventListener("submit", (event) => {
   event.preventDefault();
   addBookToLibrary();
@@ -125,13 +160,13 @@ formInputs.forEach((input) => {
     // Styling labels on input focus
     input.previousElementSibling.style.cssText = 'background-size: 0 1px, 100% 1px';
   });
-})
+});
 
 formInputs.forEach((input) => {
   input.addEventListener('blur', () => {
     input.previousElementSibling.style.cssText = 'background-size: 100% 1px, 0 1px';
   });
-})
+});
 
 searchInput.addEventListener('search', findBook);
 searchBtn.addEventListener('click', findBook);
@@ -155,45 +190,6 @@ function showDialogWindow() {
   setTimeout(() => {
     dialogWindow.classList.remove('show-dialog');
   }, 1300)
-}
-
-function deleteBook() {
-  const dataNumber = divBook.getAttribute("data-number");
-  // Reduce data-number if book was deleted
-  allBooks = document.querySelectorAll('.book');
-
-  allBooks.forEach((book) => {
-    if (dataNumber < book.dataset.number) {
-      book.dataset.number = book.dataset.number - 1;
-    } 
-  });
-
-  library.splice(dataNumber, 1);
-  divBook.remove();
-  isLibraryEmpty();
-}
-}
-
-function changeBookStatus() {
-  if (bookStatus.classList.contains("unread") || bookStatus.classList.contains("read")) {
-
-    bookStatus.classList.contains("unread") ?
-      bookStatus.classList.replace("unread", "read") :
-      bookStatus.classList.replace("read", "unread");
-
-    bookStatus.classList.add("shrink-btn");
-    setTimeout(() => {
-      bookStatus.classList.remove("shrink-btn");
-
-      bookStatus.classList.contains("unread") ?
-        bookStatus.textContent = "Unread" :
-        bookStatus.textContent = "Read";
-
-    }, 400);
-    if (bookStatus.classList.contains("shrink-btn")) {
-      bookStatus.textContent = "";
-    }
-  }
 }
 
 // Search for book using input
