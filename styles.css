@@ -198,7 +198,7 @@ form > input,
 
 label {
     width:max-content;
-    background-image:  linear-gradient(#fff, #fff), linear-gradient(var(--header-color), var(--header-color));
+    background-image:  linear-gradient(var(--main-color), var(--main-color)), linear-gradient(var(--header-color), var(--header-color));
     background-size: 100% 2px, 100% 2px;
     background-repeat: no-repeat, no-repeat; 
     background-position: 100% 100%, 0 100%;
