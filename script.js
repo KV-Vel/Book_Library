@@ -9,6 +9,17 @@ const form = document.querySelector("form");
 const formInputs = form.querySelectorAll('input');
 const searchInput = document.querySelector('#search');
 const searchBtn = document.querySelector('.search-input-icon');
+const [...inputs] = document.querySelectorAll('.book-form > input[type="text"]');
+
+inputs.forEach((input) => input.addEventListener('input', () => {
+  input.reportValidity();
+  if(input.validity.tooShort) {
+    input.setCustomValidity("Value is too short");
+  } else {
+    console.log('ok');
+    input.setCustomValidity("");
+  }
+}));
 
 //Display empty library message
 function isLibraryEmpty() {
@@ -47,6 +58,16 @@ function addBookToLibrary() {
   library.push(new Book(titleInput, authorInput, pagesInput, statusInput));
 
   form.reset();
+}
+
+function checkValidity(input) {
+  console.log(input.validity.tooShort)
+  if(input.validity.tooShort) {
+    input.setCustomValidity("Value is too short");
+    return;
+  } else {
+    input.setCustomValidity("");
+  }
 }
 
 function displayNewBook() {

@@ -34,13 +34,13 @@
                     <dialog aria-label="new-book-card" class="popup-wrapper" draggable="false">
                         <div>
                             <h3 id="new-book-card">Book card</h3>
-                            <form method="dialog" action="">
+                            <form method="dialog" action="" class="book-form">
                                 <label for="title">Title</label>
-                                <input class='titleInput' placeholder="Catch 22" type='text' required id="title" autocomplete="off" autofocus maxlength="43" name="title">
+                                <input class='titleInput' placeholder="Catch 22" type='text' id="title" autocomplete="off" autofocus maxlength="43" minlength="2" name="title" required>
                                 <label for="author">Author</label>
-                                <input class='authorInput' placeholder="Joseph Heller" type="text" required id="author" autocomplete="off" name="author">
+                                <input class='authorInput' placeholder="Joseph Heller" type="text" id="author" minlength="2 autocomplete="off" name="author" required>
                                 <label for="pages">Pages</label>
-                                <input class='pagesInput' placeholder="544" type='text' required id="pages" autocomplete="off" name="pages">
+                                <input class='pagesInput' placeholder="544" type='text' id="pages" autocomplete="off" minlength="2" name="pages" required>
                                 <div class="book-status">
                                     <label for="read-status">Read?</label>
                                     <input class='statusInput' type="checkbox" id="read-status" name="read-status">
