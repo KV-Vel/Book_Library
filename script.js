@@ -251,27 +251,16 @@ searchBtn.addEventListener('click', findBook);
 
 // Search for book using input
 function findBook() {
-  allBooks = document.querySelectorAll('.book');
   const userInput = searchInput.value;
-  
-  const resultOfUserSearch = library.map((book, index) => {if (book.title.includes(userInput) || book.author.includes(userInput)) {return index}})
-                                    .filter(bookIndex => bookIndex !== undefined);
+  const allBooks = lib.books;
+
+  const resultOfUserSearch = allBooks.filter((book) => {
+    if (book.title.includes(userInput) || book.author.includes(userInput)) return book
+  });
 
   if (resultOfUserSearch.length === 0) {
     alert('No such book');
-  }
-  // Hidding books that don't meet search
-  for (let bookIndex of resultOfUserSearch) {
-    allBooks.forEach((book) => {
-      if (book.getAttribute('data-number') != bookIndex && !resultOfUserSearch.includes(Number(book.getAttribute('data-number')))) {
-        book.style.cssText += 'display: none;';
-      } else {
-        book.style.cssText += 'display: flex;';
-      }
-    })
-  }
-  // After deleting input, book that was hidding will appear back
-  if (!userInput || userInput === ' ') {
-    allBooks.forEach((book) => book.style.cssText += 'display: flex;');
+  } else {
+    displayBooks(resultOfUserSearch);
   }
 }
